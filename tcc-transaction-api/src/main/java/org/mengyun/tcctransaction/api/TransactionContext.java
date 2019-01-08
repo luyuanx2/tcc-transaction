@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 事务上下文
+ *
  * Created by changmingxie on 10/30/15.
  */
 public class TransactionContext implements Serializable {
@@ -12,8 +14,15 @@ public class TransactionContext implements Serializable {
     private static final long serialVersionUID = -8199390103169700387L;
     private TransactionXid xid;
 
+    /**
+     * 事务状态
+     * @see TransactionStatus
+     */
     private int status;
 
+    /**
+     * 附加属性
+     */
     private Map<String, String> attachments = new ConcurrentHashMap<String, String>();
 
     public TransactionContext() {

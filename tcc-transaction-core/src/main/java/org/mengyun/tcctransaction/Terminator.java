@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 
 /**
+ * 终结者.
+ *
  * Created by changmingxie on 10/30/15.
  */
 public class Terminator implements Serializable {
@@ -20,6 +22,13 @@ public class Terminator implements Serializable {
 
     }
 
+    /**
+     * 执行目标方法
+     * @param transactionContext
+     * @param invocationContext
+     * @param transactionContextEditorClass
+     * @return
+     */
     public Object invoke(TransactionContext transactionContext, InvocationContext invocationContext, Class<? extends TransactionContextEditor> transactionContextEditorClass) {
 
 

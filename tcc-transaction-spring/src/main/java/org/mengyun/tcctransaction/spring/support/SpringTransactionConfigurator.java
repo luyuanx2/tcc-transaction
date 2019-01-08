@@ -18,15 +18,27 @@ public class SpringTransactionConfigurator implements TransactionConfigurator {
 
     private static volatile ExecutorService executorService = null;
 
+    /**
+     * 事务库
+     */
     @Autowired
     private TransactionRepository transactionRepository;
 
+    /**
+     * 事务恢复配置
+     * <p>自动注入,默认: {@code false}</p>
+     */
     @Autowired(required = false)
     private RecoverConfig recoverConfig = DefaultRecoverConfig.INSTANCE;
 
-
+    /**
+     * 事务管理器
+     */
     private TransactionManager transactionManager;
 
+    /**
+     * 初始化方法, 创建事务管理器
+     */
     public void init() {
         transactionManager = new TransactionManager();
         transactionManager.setTransactionRepository(transactionRepository);

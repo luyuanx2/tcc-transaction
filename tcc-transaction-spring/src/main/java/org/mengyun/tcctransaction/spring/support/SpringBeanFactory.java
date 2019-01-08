@@ -9,6 +9,9 @@ import org.springframework.context.ApplicationContextAware;
 import java.util.Map;
 
 /**
+ * 实现 {@link ApplicationContextAware}, 保存spring应用上下文
+ * @see ApplicationContext
+ *
  * Created by changmingxie on 11/22/15.
  */
 public class SpringBeanFactory implements BeanFactory, ApplicationContextAware {

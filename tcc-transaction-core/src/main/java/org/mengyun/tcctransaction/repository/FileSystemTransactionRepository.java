@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 文件系统事务库.
+ *
  * Created by changming.xie on 2/24/16.
  * this repository is suitable for single node, not for cluster nodes
  */

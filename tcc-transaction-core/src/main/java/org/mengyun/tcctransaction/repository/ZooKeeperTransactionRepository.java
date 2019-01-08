@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * ZooKeeper事务库.
+ *
  * Created by changming.xie on 2/18/16.
  */
 public class ZooKeeperTransactionRepository extends CachableTransactionRepository {

@@ -1,6 +1,8 @@
 package org.mengyun.tcctransaction.support;
 
 /**
+ * bean 工厂.
+ *
  * Created by changmingxie on 11/20/15.
  */
 public interface BeanFactory {

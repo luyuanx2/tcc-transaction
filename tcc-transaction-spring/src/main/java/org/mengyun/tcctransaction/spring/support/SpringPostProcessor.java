@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 /**
+ * {@link ContextRefreshedEvent} 事件监听器
+ * spring 容器初始化完成时回调，注册{@link BeanFactory} 到 {@link FactoryBuilder#beanFactories}
+ *
  * Created by changmingxie on 11/20/15.
  */
 public class SpringPostProcessor implements ApplicationListener<ContextRefreshedEvent> {

@@ -17,14 +17,25 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * JDBC事务库（在应用服务中实例化并注入数据源）.
+ *
  * Created by changmingxie on 10/30/15.
  */
 public class JdbcTransactionRepository extends CachableTransactionRepository {
 
+    /**
+     * 数据库事务日志表的DOMAIN字段值
+     */
     private String domain;
 
+    /**
+     * 表名后缀
+     */
     private String tbSuffix;
 
+    /**
+     * 数据源
+     */
     private DataSource dataSource;
 
     private ObjectSerializer serializer = new KryoPoolSerializer();

@@ -10,16 +10,28 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 
 /**
+ * 事务管理器.
+ *
  * Created by changmingxie on 10/26/15.
  */
 public class TransactionManager {
 
     static final Logger logger = Logger.getLogger(TransactionManager.class.getSimpleName());
 
+    /**
+     * 事务库
+     */
     private TransactionRepository transactionRepository;
 
+    /**
+     * 定义当前线程的事务局部变量
+     * Deque是用来处理嵌套事务，一个线程内可能存在其他RequiresNew的事务，使用Deque可以逐层处理
+     */
     private static final ThreadLocal<Deque<Transaction>> CURRENT = new ThreadLocal<Deque<Transaction>>();
 
+    /**
+     * 线程池.
+     */
     private ExecutorService executorService;
 
     public void setTransactionRepository(TransactionRepository transactionRepository) {
@@ -33,23 +45,36 @@ public class TransactionManager {
     public TransactionManager() {
     }
 
+    /**
+     * 事务开始
+     * @return
+     */
     public Transaction begin() {
 
-        Transaction transaction = new Transaction(TransactionType.ROOT);
-        transactionRepository.create(transaction);
-        registerTransaction(transaction);
+        Transaction transaction = new Transaction(TransactionType.ROOT); // 创建主事务
+        transactionRepository.create(transaction); // 创建事务记录,写入事务日志库
+        registerTransaction(transaction); // 将该事务日志记录存入当前线程的事务局部变量中
         return transaction;
     }
 
+    /**
+     * 基于全局事务ID扩展创建新的分支事务，并存于当前线程的事务局部变量中.
+     * @param transactionContext
+     */
     public Transaction propagationNewBegin(TransactionContext transactionContext) {
 
-        Transaction transaction = new Transaction(transactionContext);
+        Transaction transaction = new Transaction(transactionContext); // 事务ID不变
         transactionRepository.create(transaction);
 
-        registerTransaction(transaction);
+        registerTransaction(transaction);  // 存于当前线程的事务局部变量中
         return transaction;
     }
 
+    /**
+     * 找出存在的事务并处理.
+     * @param transactionContext
+     * @throws NoExistedTransactionException
+     */
     public Transaction propagationExistBegin(TransactionContext transactionContext) throws NoExistedTransactionException {
         Transaction transaction = transactionRepository.findByXid(transactionContext.getXid());
 
@@ -62,12 +87,17 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * 提交
+     * @param asyncCommit 是否异步提交
+     */
     public void commit(boolean asyncCommit) {
 
+        // 获取当前线程事务队列的第一个事务
         final Transaction transaction = getCurrentTransaction();
-
+        // 事务状态改为: 确认中:2.
         transaction.changeStatus(TransactionStatus.CONFIRMING);
-
+        // 更新到数据库
         transactionRepository.update(transaction);
 
         if (asyncCommit) {
@@ -90,7 +120,10 @@ public class TransactionManager {
         }
     }
 
-
+    /**
+     * 回滚
+     * @param asyncRollback 是否异步回滚
+     */
     public void rollback(boolean asyncRollback) {
 
         final Transaction transaction = getCurrentTransaction();
@@ -117,7 +150,10 @@ public class TransactionManager {
         }
     }
 
-
+    /**
+     * 提交事务
+     * @param transaction
+     */
     private void commitTransaction(Transaction transaction) {
         try {
             transaction.commit();
@@ -128,6 +164,10 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * 事务回滚
+     * @param transaction
+     */
     private void rollbackTransaction(Transaction transaction) {
         try {
             transaction.rollback();
@@ -138,6 +178,10 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * 获取当前线程事务队列的第一个事务
+     * @return
+     */
     public Transaction getCurrentTransaction() {
         if (isTransactionActive()) {
             return CURRENT.get().peek();
@@ -145,12 +189,19 @@ public class TransactionManager {
         return null;
     }
 
+    /**
+     * 当前线程是否绑定事务
+     * @return
+     */
     public boolean isTransactionActive() {
         Deque<Transaction> transactions = CURRENT.get();
         return transactions != null && !transactions.isEmpty();
     }
 
-
+    /**
+     * 添加事务到前线程事务队列
+     * @param transaction
+     */
     private void registerTransaction(Transaction transaction) {
 
         if (CURRENT.get() == null) {
@@ -160,6 +211,10 @@ public class TransactionManager {
         CURRENT.get().push(transaction);
     }
 
+    /**
+     * 清除当前线程的事务变量
+     * @param transaction
+     */
     public void cleanAfterCompletion(Transaction transaction) {
         if (isTransactionActive() && transaction != null) {
             Transaction currentTransaction = getCurrentTransaction();
@@ -174,6 +229,10 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * 为当前事务添加参与者
+     * @param participant
+     */
     public void enlistParticipant(Participant participant) {
         Transaction transaction = this.getCurrentTransaction();
         transaction.enlistParticipant(participant);

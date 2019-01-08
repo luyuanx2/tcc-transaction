@@ -3,6 +3,8 @@ package org.mengyun.tcctransaction.api;
 import java.lang.reflect.Method;
 
 /**
+ * 事务上下文编辑器
+ *
  * Created by changming.xie on 1/18/17.
  */
 public interface TransactionContextEditor {

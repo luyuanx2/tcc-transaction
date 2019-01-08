@@ -13,6 +13,8 @@ import javax.transaction.xa.Xid;
 import java.util.*;
 
 /**
+ * Redis缓存事务库.
+ *
  * Created by changming.xie on 2/24/16.
  * <p/>
  * As the storage of transaction need safely durable,make sure the redis server is set as AOF mode and always fsync.

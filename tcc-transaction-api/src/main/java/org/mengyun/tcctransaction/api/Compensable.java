@@ -7,6 +7,8 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 
 /**
+ * 事务补偿注解.
+ *
  * Created by changmingxie on 10/25/15.
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -21,8 +23,16 @@ public @interface Compensable {
 
     public Class<? extends TransactionContextEditor> transactionContextEditor() default DefaultTransactionContextEditor.class;
 
+    /**
+     * 是否为异步确认方法.
+     * <p>默认: {@code false}.
+     */
     public boolean asyncConfirm() default false;
 
+    /**
+     * 是否为异步取消方法.
+     * <p>默认: {@code false}.
+     */
     public boolean asyncCancel() default false;
 
     class NullableTransactionContextEditor implements TransactionContextEditor {

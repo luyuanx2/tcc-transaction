@@ -14,12 +14,20 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 缓存事务库.
+ *
  * Created by changmingxie on 10/30/15.
  */
 public abstract class CachableTransactionRepository implements TransactionRepository {
 
+    /**
+     * 本地缓存过期时间（以秒为单位）
+     */
     private int expireDuration = 120;
 
+    /**
+     * 事务日志记录本地缓存
+     */
     private Cache<Xid, Transaction> transactionXidCompensableTransactionCache;
 
     @Override

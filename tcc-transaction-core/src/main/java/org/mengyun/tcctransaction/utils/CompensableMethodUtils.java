@@ -10,10 +10,17 @@ import org.mengyun.tcctransaction.common.MethodType;
 import java.lang.reflect.Method;
 
 /**
+ * 可补偿方法工具类.
+ *
  * Created by changmingxie on 11/21/15.
  */
 public class CompensableMethodUtils {
 
+    /**
+     * 获取有{@link Compensable} 注解的{@code Method} 对象.
+     * @param pjp
+     * @return
+     */
     public static Method getCompensableMethod(ProceedingJoinPoint pjp) {
         Method method = ((MethodSignature) (pjp.getSignature())).getMethod();
 
@@ -27,6 +34,13 @@ public class CompensableMethodUtils {
         return method;
     }
 
+    /**
+     * 计算方法类型.
+     * @param propagation
+     * @param isTransactionActive
+     * @param transactionContext
+     * @return
+     */
     public static MethodType calculateMethodType(Propagation propagation, boolean isTransactionActive, TransactionContext transactionContext) {
 
         if ((propagation.equals(Propagation.REQUIRED) && !isTransactionActive && transactionContext == null) ||
@@ -39,6 +53,12 @@ public class CompensableMethodUtils {
         }
     }
 
+    /**
+     * 计算方法类型.
+     * @param transactionContext
+     * @param isCompensable
+     * @return
+     */
     public static MethodType calculateMethodType(TransactionContext transactionContext, boolean isCompensable) {
 
         if (transactionContext == null && isCompensable) {
@@ -55,6 +75,11 @@ public class CompensableMethodUtils {
         }
     }
 
+    /**
+     * 获取事务上下文参数的位置。
+     * @param parameterTypes
+     * @return
+     */
     public static int getTransactionContextParamPosition(Class<?>[] parameterTypes) {
 
         int position = -1;
@@ -68,6 +93,11 @@ public class CompensableMethodUtils {
         return position;
     }
 
+    /**
+     * 从参数获取事务上下文.
+     * @param args
+     * @return
+     */
     public static TransactionContext getTransactionContextFromArgs(Object[] args) {
 
         TransactionContext transactionContext = null;
