@@ -16,7 +16,7 @@ public interface RecoverConfig {
     public int getMaxRetryCount();
 
     /**
-     * 获取需要执行事务恢复的时间间隔.
+     * 事务恢复的时间间隔,单位：秒.
      * @return
      */
     public int getRecoverDuration();
@@ -27,6 +27,9 @@ public interface RecoverConfig {
      */
     public String getCronExpression();
 
+    /**
+     * @return 延迟取消异常集合
+     */
     public Set<Class<? extends Exception>> getDelayCancelExceptions();
 
     public void setDelayCancelExceptions(Set<Class<? extends Exception>> delayRecoverExceptions);

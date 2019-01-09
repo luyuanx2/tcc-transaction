@@ -34,6 +34,9 @@ public class DefaultRecoverConfig implements RecoverConfig {
 
     private int asyncTerminateThreadPoolSize = 1024;
 
+    /**
+     * 延迟取消异常集合
+     */
     private Set<Class<? extends Exception>> delayCancelExceptions = new HashSet<Class<? extends Exception>>();
 
     public DefaultRecoverConfig() {

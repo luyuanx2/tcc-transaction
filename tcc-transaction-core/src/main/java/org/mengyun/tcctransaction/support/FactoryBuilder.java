@@ -22,12 +22,13 @@ public final class FactoryBuilder {
     private static List<BeanFactory> beanFactories = new ArrayList<BeanFactory>();
 
     /**
+     * 类 与 BeanFactory 的映射.
      * 保证SingeltonFactory单例
      */
     private static ConcurrentHashMap<Class, SingeltonFactory> classFactoryMap = new ConcurrentHashMap<Class, SingeltonFactory>();
 
     /**
-     * 获取 {@link SingeltonFactory}
+     * 获得指定类的 {@link SingeltonFactory}
      * @param clazz
      * @param <T>
      * @return
@@ -59,6 +60,7 @@ public final class FactoryBuilder {
     }
 
     /**
+     * 单例工厂
      * 保证 T 单例
      * @param <T>
      */

@@ -179,7 +179,7 @@ public class TransactionManager {
     }
 
     /**
-     * 获取当前线程事务队列的第一个事务
+     * 获取当前线程事务队列的第一个（头部）元素
      * @return
      */
     public Transaction getCurrentTransaction() {
@@ -190,7 +190,7 @@ public class TransactionManager {
     }
 
     /**
-     * 当前线程是否绑定事务
+     * 当前线程是否在事务中
      * @return
      */
     public boolean isTransactionActive() {
@@ -212,7 +212,7 @@ public class TransactionManager {
     }
 
     /**
-     * 清除当前线程的事务变量
+     * 将事务从当前线程事务队列移除
      * @param transaction
      */
     public void cleanAfterCompletion(Transaction transaction) {

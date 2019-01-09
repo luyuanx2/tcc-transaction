@@ -9,10 +9,10 @@ import org.mengyun.tcctransaction.api.TransactionContext;
 public class TransactionUtils {
 
     /**
-     * 是否是合法的事务上下文.
-     * @param isTransactionActive
-     * @param propagation
-     * @param transactionContext
+     * 判断事务上下文是否合法.
+     * @param isTransactionActive 是否事务开启
+     * @param propagation 传播行为
+     * @param transactionContext 事务上下文
      * @return
      */
     public static boolean isLegalTransactionContext(boolean isTransactionActive, Propagation propagation, TransactionContext transactionContext) {

@@ -36,14 +36,15 @@ public class Terminator implements Serializable {
 
             try {
 
+                // 获得参与者对象
                 Object target = FactoryBuilder.factoryOf(invocationContext.getTargetClass()).getInstance();
 
                 Method method = null;
-
+                // 获得目标方法
                 method = target.getClass().getMethod(invocationContext.getMethodName(), invocationContext.getParameterTypes());
-
+                // 设置 事务上下文 到方法参数
                 FactoryBuilder.factoryOf(transactionContextEditorClass).getInstance().set(transactionContext, target, method, invocationContext.getArgs());
-
+                // 执行方法
                 return method.invoke(target, invocationContext.getArgs());
 
             } catch (Exception e) {

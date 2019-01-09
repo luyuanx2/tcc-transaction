@@ -24,7 +24,7 @@ import java.util.List;
 public class JdbcTransactionRepository extends CachableTransactionRepository {
 
     /**
-     * 数据库事务日志表的DOMAIN字段值
+     * 领域
      */
     private String domain;
 
